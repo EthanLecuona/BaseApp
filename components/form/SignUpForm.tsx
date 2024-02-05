@@ -43,7 +43,7 @@ const SignUpForm = () => {
   });
 
   const router = useRouter();
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     const handleSuccess = (data: any) => {
       toast({
         title: `Registered Successfully ${data.email}`,
@@ -58,7 +58,7 @@ const SignUpForm = () => {
       });
     }
 
-    fetch('/api/users', {
+    await fetch('/api/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -67,7 +67,6 @@ const SignUpForm = () => {
     })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data)
       if(data?.id) {
         handleSuccess(data)
         router.push('/sign-in')

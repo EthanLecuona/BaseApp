@@ -41,13 +41,14 @@ export async function PUT(request: Request) {
     const session = await getServerSession(authOptions);
     const currentUserEmail = session?.user?.email!;
     const data = await request.json();
-    data.age = Number(data.age);
+    if(data.email != currentUserEmail) {
+        return new Response(JSON.stringify({ error: "Naughty, Naughty!" }), { status: 500 });
+    }
 
     const user = await prisma.user.update({
         where: {
             email: currentUserEmail,
         },
-        //should do some validation to check if the data fits the structure in the database.
         data,
     });
     return NextResponse.json(user);

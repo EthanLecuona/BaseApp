@@ -31,6 +31,7 @@ export default async function BlogPage(){
 
     if(allPosts == null || allPosts == undefined || allPosts.length == 0){
         return (
+            
             <Tabs defaultValue="allPosts">
                 <TabsList className="grid w-screen grid-cols-2">
                     <TabsTrigger value="allPosts">All Posts</TabsTrigger>
@@ -39,7 +40,9 @@ export default async function BlogPage(){
                 <div className="w-screen flex justify-center my-2">
                     <CreatePostForm user={currentUser}/>
                 </div>
+            
                 <TabsContent value="allPosts">
+                
                     <div className="w-screen">
                         <h1>There are no posts yet!</h1>
                     </div>

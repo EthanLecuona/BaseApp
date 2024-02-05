@@ -21,7 +21,10 @@ import { useRouter } from 'next/navigation';
 import GitHubSignInButton from '../GitHubSignInButton';
 
 const FormSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email'),
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email('Invalid email'),
   password: z
     .string()
     .min(1, 'Password is required')

@@ -38,7 +38,6 @@ export async function PUT(request: Request) {
     const session = await getServerSession(authOptions);
     // const currentUserEmail = session?.user?.email!;
     const data = await request.json();
-    console.log(data);
 
     const post = await prisma.post.update({
         where: {

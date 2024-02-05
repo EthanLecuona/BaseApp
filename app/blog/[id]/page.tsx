@@ -61,7 +61,6 @@ export default async function BlogPostPage({params}: Props) {
 
     const isAuthor = author.id === currentUser.id 
 
-    console.log(post)
     return (
         <div className="grid-rows-2">
             {isAuthor ? 

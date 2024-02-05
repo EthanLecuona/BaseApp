@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-export function ProfileForm({user}: any){
+export function DashboardForm({user}: any){
     const router = useRouter();
     const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
         //doesn't refresh the page

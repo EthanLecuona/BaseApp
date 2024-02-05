@@ -151,8 +151,8 @@ export function EditPostForm({user, post} : any) {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            title: '',
-            content: ''
+            title: post.title,
+            content: post.content
         }
     });
 
@@ -190,10 +190,8 @@ export function EditPostForm({user, post} : any) {
         .then((res) => res.json())
         .then((data) => {
             if(data){
-                console.log(data + 'succ')
                 handleSuccess()
             } else {
-                console.log(data + 'fail')
                 handleError()
             }
         })
@@ -221,7 +219,7 @@ export function EditPostForm({user, post} : any) {
                             <FormItem>
                                 <Label htmlFor="title">Title</Label>
                                 <FormControl>
-                                    <Input id="title"{...field} defaultValue={post.title}/>
+                                    <Input id="title"{...field}/>
                                 </FormControl>
                             </FormItem>
                         )}
@@ -233,7 +231,7 @@ export function EditPostForm({user, post} : any) {
                             <FormItem>
                                 <Label htmlFor="content">Content</Label>
                                 <FormControl>
-                                <Textarea {...field} id="content" defaultValue={post.content}/>
+                                <Textarea {...field} id="content"/>
                                 </FormControl>
                             </FormItem>
                         )}
