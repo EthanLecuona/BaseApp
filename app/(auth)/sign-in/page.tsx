@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from "@/lib/authOptions";
 import { redirect } from 'next/navigation';
 
 export default async function page() {
@@ -36,10 +36,10 @@ export default async function page() {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
           <p className="text-lg">
-              &ldquo;Hey there, fellow dreamer! Did you know this project isn't just about bits and bytes? 
-              It's a love letter, a shared dream between me and a very special girl. We've decided to embark on this coding journey together, making this project the bedrock of all our future creations. 
-              Think of it as our digital diary, where each line of code is a memory, every function a shared experience, and all the bugs... well, let's just say they're our little adventures.&rdquo;
-            </p>
+            {`Hey there, fellow dreamer! Did you know this project isn't just about bits and bytes? 
+            It's a love letter, a shared dream between me and a very special girl. We've decided to embark on this coding journey together, making this project the bedrock of all our future creations. 
+            Think of it as our digital diary, where each line of code is a memory, every function a shared experience, and all the bugs... well, let's just say they're our little adventures.`}
+          </p>
             <footer className="text-sm">Ethan Lecuona | Maseeha Mohamed Ibrahim</footer>
           </blockquote>
         </div>

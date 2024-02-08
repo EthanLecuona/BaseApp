@@ -6,6 +6,8 @@ import AuthProvider from "./AuthProvider";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export const metadata: Metadata = {
   title: "Base App",

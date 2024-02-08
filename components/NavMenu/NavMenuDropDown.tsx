@@ -48,10 +48,17 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
    
 export function NavMenuDropDown() {
   const { data: session} = useSession();
   const [open, setOpen ] = useState(false);
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/sign-in')
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

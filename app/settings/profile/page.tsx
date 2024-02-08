@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { ProfileForm } from "./profile-form"
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 
 export default async function SettingsProfilePage() {
   const session = await getServerSession(authOptions);

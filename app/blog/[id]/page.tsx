@@ -1,7 +1,7 @@
 //Always fetches the latest data 
 //export const dynamic = 'force-dynamic';
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import BlogCard from "@/components/BlogCard/BlogCard";
 import DeleteBlogPostButton from "@/components/BlogCard/BlogDeletePostButton";
 import { EditPostForm } from "@/components/BlogCard/BlogPostDrawer";

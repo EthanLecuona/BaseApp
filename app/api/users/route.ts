@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from 'next-auth';
 import { hashSync } from 'bcrypt-ts'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export async function GET(request: NextRequest){
     const targetUserId = request.nextUrl.searchParams.get('targetUserId');
@@ -35,7 +36,6 @@ export async function GET(request: NextRequest){
 
     
 }
-
 
 export async function PUT(request: Request) {
     const session = await getServerSession(authOptions);
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
             data: {
                 name: data.name,
                 bio: data.bio,
-                age: data.age,
+                dob: data.dob,
                 email: data.email,
                 password: hashPass
             }

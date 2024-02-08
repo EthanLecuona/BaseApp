@@ -41,8 +41,12 @@ import { useEffect, useState } from "react"
 import { Label } from "@/components/ui/label";
 import { CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Avatar } from "@/components/ui/avatar";
+import { AvatarImage } from "@radix-ui/react-avatar";
 
 
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
 const FormSchema = z.object({
   name: z
     .string()
@@ -64,6 +68,7 @@ const FormSchema = z.object({
   dob: z.date({
     required_error: "A date of birth is required.",
   }),
+  image: typeof window === 'undefined' ? z.any() : z.instanceof(File),
 })
 
 
@@ -71,6 +76,8 @@ export function ProfileForm({ user } : any) {
   const router = useRouter()
   const [ isLocked, setIsLocked ] = useState(true)
   const [ showAlert, setShowAlert ] = useState(false);
+  // const [ file, setFile ] = useState(null);
+  const { update } = useSession();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -79,11 +86,17 @@ export function ProfileForm({ user } : any) {
       email: user.email,
       bio: user.bio ?? '',
       dob: new Date(user.dob),
+      image: undefined,
     },
     mode: "onChange",
   })
 
+  //Get Base64 for uploaded profile picture.
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
+  };
+
+  //Locking form and managing button along with the alert. 
   const handleEditClick = () => {
     if (isLocked) {
       setIsLocked(false);
@@ -91,8 +104,6 @@ export function ProfileForm({ user } : any) {
       setShowAlert(true);
     }
   };
-
-  
   const handleConfirmChanges = async () => {
     setShowAlert(false); 
     setIsLocked(true); 
@@ -104,12 +115,30 @@ export function ProfileForm({ user } : any) {
     setIsLocked(true);
   };
 
+  //Submitting the form.
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    const formFile = new FormData();
+    formFile.append('file', values.image as File);
+    const url = await fetch('http://localhost:3000/api/upload', {
+      method: 'POST',
+      body: formFile
+    })
+    .then((res) => res.json())
+
+    console.log(url)
+    const body = {
+      name: values.name,
+      email: values.email,
+      bio: values.bio,
+      dob: values.dob,
+      image: url
+    };
+
     const handleSuccess = (data: any) => {
-        toast({
-          title: `Updated Successfully ${data.email}`,
-          description: new Date().toISOString()
-        });
+      toast({
+        title: `Updated Successfully ${data.email}`,
+        description: new Date().toISOString()
+      });
     }
     const handleError = (error: any) => {
       toast({
@@ -117,13 +146,6 @@ export function ProfileForm({ user } : any) {
         description: new Date().toISOString()
       });
     }
-
-    const body = {
-      name: values.name,
-      email: values.email,
-      bio: values.bio,
-      dob: values.dob,
-    };
 
     await fetch('/api/users', {
       method: 'PUT',
@@ -137,16 +159,52 @@ export function ProfileForm({ user } : any) {
       if(data){
         handleSuccess(data)
         router.refresh()
-        
       } else {
         handleError('User Update Failed.')
       }
     })
+    update({ image: url });
   }
   
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <FormField
+        control={form.control}
+        name="image"
+        render={({ field: { onChange, onBlur, name, ref } }) => (
+          <FormItem>
+            <FormLabel>Profile Image</FormLabel>
+            <Avatar>
+              <AvatarImage src={user.image || '/next.svg'} />
+            </Avatar>
+            <FormControl>
+              <Input
+                type="file"
+                accept="image/*"
+                disabled={isLocked}
+                name="image" // assign name
+                ref={ref} // assign ref
+                onChange={(e) => {
+                  // Handle file selection
+                  if(e.target.files && e.target.files.length > 0){
+                    const file = e.target.files[0];
+                    if (file) {
+                      console.log('File set')
+                      onChange(file); // Update react-hook-form state
+                    }
+                  }
+                }}
+                onBlur={onBlur} // assign onBlur
+              />
+            </FormControl>
+            <FormDescription>
+              Upload a profile picture.
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
         <FormField
           control={form.control}
           name="name"

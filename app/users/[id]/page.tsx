@@ -2,6 +2,7 @@ import FollowButton from '@/components/FollowingButton/FollowingButton';
 import { prisma} from '@/lib/prisma';
 import { Metadata } from 'next';
 import Image from 'next/image';
+import { differenceInYears } from 'date-fns';
 import {
     Card,
     CardContent,
@@ -23,11 +24,18 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 }
 
 
-export default async function UserProfile({params}: Props){
+export default async function UserProfile({ params }: any){
 
-    const user = await prisma.user.findUnique({ where: { id: params.id}});
-    const { name, bio, image, age } = user ?? {};
-
+    const user = await fetch(`http://localhost:3000/api/users?targetUserId=${params.id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+        
+    })
+    .then((res) => res.json());
+    const { id, name, bio, image, dob } = user ?? {};
     return (
         <Card className="w-[250px] flex flex-col items-center m-8">
             <CardHeader className='flex flex-col items-center'>
@@ -39,12 +47,12 @@ export default async function UserProfile({params}: Props){
                     height={250}
                 />
                 <CardTitle>{name}</CardTitle>
-                <CardDescription>Age: {age}</CardDescription>
+                <CardDescription>Age: {differenceInYears(new Date(), new Date(dob))}</CardDescription>
             </CardHeader>
             <CardContent>
                 {bio}
             </CardContent>
-            <FollowButton targetUserId={params.id}/>
+            <FollowButton targetUserId={id}/>
         </Card>
     )
 }
