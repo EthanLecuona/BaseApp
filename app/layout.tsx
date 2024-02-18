@@ -8,7 +8,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import { SideMenu } from "@/components/SIdeMenu/SideMenu";
+import SideBar from "@/components/SideBar/SideBar";
+import Header from "@/components/SideBar/Header";
 
 export const metadata: Metadata = {
   title: "Base App",
@@ -19,28 +20,7 @@ export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans"
 })
-const sidebarNavItems = [
-  {
-    title: "Profile",
-    href: "/settings/profile",
-  },
-  {
-    title: "Account",
-    href: "/settings/account",
-  },
-  {
-    title: "Appearance",
-    href: "/settings/appearance",
-  },
-  {
-    title: "Notifications",
-    href: "/settings/notifications",
-  },
-  {
-    title: "Display",
-    href: "/settings/display",
-  },
-]
+
 
 export default async function RootLayout({
   children,
@@ -48,23 +28,53 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  console.log(session?.user.role);
+  
+  if(session?.user.role === 'admin') {
+    return (
+      <AuthProvider>
+      <html lang="en">
+        <body className={cn(
+          "min-h-screen font-sans antialiased" 
+        )}>
+          <main >
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange>
+                <div>
+                    <SideBar />
+                    <div className="pl-[300px]">
+                      <Header/>
+                    </div>
+                    <div className="pl-[300px] pt-[80px] h-full">
+                      {children}  
+                    </div>
+                </div>
+            </ThemeProvider>
+          </main>
+          <Toaster/>
+        </body>
+      </html>
+    </AuthProvider>  
+    )
+  }
   return (
     <AuthProvider>
       <html lang="en">
         <body className={cn(
           "min-h-screen font-sans antialiased" 
         )}>
-          <main className="flex flex-col justify-center items-center pt-[67px]">
+          <main >
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange>
-                {session?.user.role == 'admin' ? (
-                  <SideMenu items={sidebarNavItems} />
-                ): <NavMenu/>}
-                {children}  
+                <NavMenu/>
+                <div className="pt-[67px]">
+                  {children}  
+                </div>
             </ThemeProvider>
           </main>
           <Toaster/>

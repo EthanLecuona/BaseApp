@@ -29,6 +29,7 @@ export interface User {
   bio?: string;
   dob?: Date;
   email?: string;
+  role?: string;
   emailVerified?: Date;
   image?: string;
   password?: string;

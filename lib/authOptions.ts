@@ -90,6 +90,7 @@ export const authOptions: NextAuthOptions = {
                         email: token.email
                     }
                 })
+                // console.log(refreshUser?.role)
                 if(refreshUser) {
                     token.picture = refreshUser.image;
                     token.name = refreshUser.name;

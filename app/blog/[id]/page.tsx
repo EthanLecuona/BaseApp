@@ -5,11 +5,7 @@ import { authOptions } from "@/lib/authOptions";
 import BlogCard from "@/app/blog/components/BlogCard";
 import DeleteBlogPostButton from "@/app/blog/components/BlogDeletePostButton";
 import { EditPostForm } from "@/app/blog/components/BlogPostDrawer";
-import { Button } from "@/components/ui/button";
-import { prisma } from "@/lib/prisma";
-import { Pen } from "lucide-react";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 //Updates cache very n seconds
 //export const revalidate = 420;

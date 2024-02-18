@@ -159,7 +159,7 @@ export function NavMenuDropDown() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => signOut()}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={() => handleSignOut()}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
