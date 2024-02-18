@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/lib/authOptions";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 
-
+export const dynamic = 'force-dynamic'
 export async function POST(request: NextRequest) {
     // const session = await getServerSession(authOptions);
     // if(!session) {
@@ -20,7 +20,6 @@ export async function POST(request: NextRequest) {
                 description: data.description,
             },
         })
-        await prisma.$disconnect();
         return NextResponse.json(record);
     }
     catch(error) {
@@ -40,7 +39,6 @@ export async function GET(request: NextRequest) {
                     reviews: true
                 }
             });
-            await prisma.$disconnect();
             return NextResponse.json(product);
         }
         else { 
@@ -75,7 +73,6 @@ export async function PUT(request: NextRequest) {
             },
             data
         });
-        await prisma.$disconnect();
         return NextResponse.json(product);
     }
     catch(error) {
@@ -100,7 +97,6 @@ export async function DELETE(request: NextRequest) {
                 id: targetProductId
             },
         });
-        await prisma.$disconnect();
         return NextResponse.json(product);
     }
     catch(error) {

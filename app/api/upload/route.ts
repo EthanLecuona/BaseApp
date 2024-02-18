@@ -2,7 +2,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from "@/lib/authOptions";
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import sharp from 'sharp'
 
 const s3Client = new S3Client({

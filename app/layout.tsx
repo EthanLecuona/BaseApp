@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import { SideMenu } from "@/components/SIdeMenu/SideMenu";
 
 export const metadata: Metadata = {
   title: "Base App",
@@ -18,12 +19,36 @@ export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans"
 })
+const sidebarNavItems = [
+  {
+    title: "Profile",
+    href: "/settings/profile",
+  },
+  {
+    title: "Account",
+    href: "/settings/account",
+  },
+  {
+    title: "Appearance",
+    href: "/settings/appearance",
+  },
+  {
+    title: "Notifications",
+    href: "/settings/notifications",
+  },
+  {
+    title: "Display",
+    href: "/settings/display",
+  },
+]
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+  console.log(session?.user.role);
   return (
     <AuthProvider>
       <html lang="en">
@@ -36,7 +61,9 @@ export default function RootLayout({
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange>
-                <NavMenu/>
+                {session?.user.role == 'admin' ? (
+                  <SideMenu items={sidebarNavItems} />
+                ): <NavMenu/>}
                 {children}  
             </ThemeProvider>
           </main>

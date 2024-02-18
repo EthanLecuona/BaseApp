@@ -2,9 +2,33 @@ import type { NextAuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import GithubProvider from 'next-auth/providers/github';
 import  CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { compare } from 'bcrypt-ts';
+import "next-auth";
+import { DefaultJWT } from 'next-auth/jwt';
 
+declare module "next-auth" {
+  interface User {
+    role?: string | null;
+  }
+}
+declare module "next-auth" {
+    interface Session {
+      user: {
+        /** Extending the built-in session user type */
+        id?: string| null;
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+        role?: string| null; // Add role as an optional property
+      }
+    }
+  }
+declare module "next-auth/jwt" {
+  interface JWT extends DefaultJWT {
+    role?: string | null;
+  }
+}
 export const authOptions: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     secret: process.env.NEXTAUTH_SECRET!,
@@ -46,6 +70,7 @@ export const authOptions: NextAuthOptions = {
                 if(!user) {
                     return null;
                 }
+                console.log(user)
                 return user;
             },
         })   
@@ -57,6 +82,8 @@ export const authOptions: NextAuthOptions = {
                 token.email = user.email;
                 token.picture = user.image;
                 token.name = user.name;
+                token.role = user.role;
+                
             } else if(token.email) {
                 const refreshUser = await prisma.user.findUnique({
                     where: {
@@ -65,16 +92,17 @@ export const authOptions: NextAuthOptions = {
                 })
                 if(refreshUser) {
                     token.picture = refreshUser.image;
+                    token.name = refreshUser.name;
+                    token.role = refreshUser.role;
+                    token.email = refreshUser.email;
                 }
             }
             return token;
         },
-        async session({session, token }) {
-            if(session.user){
-                session.user.image = token.picture;
-            }
+        async session({session, token, user }) {
+            session.user.role = token.role;
+            session.user.image = token.picture;
             return session
         }
-
     }
 };
