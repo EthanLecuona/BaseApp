@@ -22,7 +22,7 @@ export default async function ProductPage() {
     .then((res) => res.json());
     if(!products) {
         return (
-            <div>
+            <div className="flex flex-col justify-center items-center pt-[80px]">
                 <h1 text-center>Product Page</h1>
                 <p>Get shirts that you need!</p>
                 <ScrollArea className="w-11/12 h-full rounded-md border p-4">
@@ -37,7 +37,7 @@ export default async function ProductPage() {
     }
 
     return (
-        <div className="pt-[80px]">
+        <div className="flex flex-col justify-center items-center pt-[80px]">
             <h1 className="m-2 scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                 Product Page
             </h1>
