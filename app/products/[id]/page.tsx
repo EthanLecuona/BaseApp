@@ -29,7 +29,7 @@ export default async function ProductDetail({
     headers: {
       "content-type": "application/json"
     },
-    cache: "no-store"
+    cache: "force-cache"
   })
   .then((res) => res.json());
   
@@ -38,7 +38,7 @@ export default async function ProductDetail({
     headers: {
       "content-type": "application/json"
     },
-    cache: "no-store"
+    cache: "force-cache"
   })
   .then((res) => res.json());
   
