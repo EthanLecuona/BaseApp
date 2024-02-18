@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { signIn } from 'next-auth/react';
-import { Button } from './ui/button';
+import { Button } from '../../../components/ui/button';
 
 interface GitHubSignInButtonProps {
   children: ReactNode;

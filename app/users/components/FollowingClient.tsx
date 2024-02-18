@@ -1,7 +1,7 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '../../../components/ui/button';
 
 interface Props {
     targetUserId: string;

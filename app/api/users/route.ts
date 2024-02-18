@@ -6,6 +6,10 @@ import { hashSync } from 'bcrypt-ts'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export async function GET(request: NextRequest){
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const targetUserId = request.nextUrl.searchParams.get('targetUserId');
     const targetUserEmail = request.nextUrl.searchParams.get('targetUserEmail');
     try {
@@ -39,6 +43,9 @@ export async function GET(request: NextRequest){
 
 export async function PUT(request: Request) {
     const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const currentUserEmail = session?.user?.email!;
     const data = await request.json();
     if(data.email != currentUserEmail) {
@@ -55,6 +62,10 @@ export async function PUT(request: Request) {
 }
 
 export async function POST(request: Request) {
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     try {
         const data = await request.json();
         const checkUser = await prisma.user.findUnique({

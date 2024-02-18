@@ -1,4 +1,4 @@
-import UserCard from '@/components/UserCard/UserCard';
+import UserCard from '@/app/users/components/UserCard';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/authOptions";

@@ -1,4 +1,4 @@
-import SignUpForm from '@/components/form/SignUpForm';
+import SignUpForm from '@/app/(auth)/components/SignUpForm';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/authOptions";

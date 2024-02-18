@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from "next/navigation";
-import { toast } from "../ui/use-toast";
-import { Button } from "../ui/button";
+import { toast } from "../../../components/ui/use-toast";
+import { Button } from "../../../components/ui/button";
 import { Trash2 } from "lucide-react";
 
 export default async function DeleteBlogPostButton({postId}: any) {

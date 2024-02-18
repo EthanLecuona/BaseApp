@@ -29,9 +29,8 @@ export default function UserCard({ user } : any){
                 <Image
                     src={user.image || '/next.svg'}
                     alt='Image'
-                    
-                    width={250}
-                    height={250}
+                    width={200}
+                    height={200}
                 />
                 <CardTitle><Link href={`/users/${user.id}`}>{user.name}</Link></CardTitle>
             </CardHeader>

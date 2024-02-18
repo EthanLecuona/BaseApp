@@ -3,12 +3,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { Input } from "../ui/input";
-import { toast } from "../ui/use-toast";
-import { Button } from "../ui/button";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../../../components/ui/form";
+import { Input } from "../../../components/ui/input";
+import { toast } from "../../../components/ui/use-toast";
+import { Button } from "../../../components/ui/button";
+import { Label } from "../../../components/ui/label";
+import { Textarea } from "../../../components/ui/textarea";
 import { title } from "process";
 import { useRouter } from 'next/navigation';
 import {

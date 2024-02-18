@@ -4,6 +4,11 @@ import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
+    
     const targetPostId = request.nextUrl.searchParams.get('targetPostId');
     const userId = request.nextUrl.searchParams.get('userId');
     try {
@@ -35,8 +40,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PUT(request: Request) {
-    const session = await getServerSession(authOptions);
-    // const currentUserEmail = session?.user?.email!;
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const data = await request.json();
 
     const post = await prisma.post.update({
@@ -50,6 +57,9 @@ export async function PUT(request: Request) {
 
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const currentUserEmail = session?.user?.email!;
     const data = await request.json();
     const currentUserId = await prisma.user
@@ -73,7 +83,10 @@ export async function POST(request: Request) {
 
 
 export async function DELETE(request: NextRequest) {
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const targetPostId = request.nextUrl.searchParams.get('targetPostId');
 
     if (targetPostId === null) {

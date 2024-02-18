@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getServerSession } from 'next-auth';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { authOptions } from "@/lib/authOptions";
 import { prisma } from '@/lib/prisma';
 import sharp from 'sharp'
@@ -19,26 +19,28 @@ async function uploadImageToS3(
         fileName: string
     ): Promise<string> {
         const resizedImageBuffer = await sharp(file)
-        .resize(400, 500) // Specify your desired width or height for resizing
+        .resize(256, 256) // Specify your desired width or height for resizing
         .toBuffer();
-        console.log(process.env.AWS_BUCKET_NAME as string)
-        console.log(process.env.AWS_ACCESS_KEY_ID as string)
-        console.log(process.env.AWS_SECRET_ACCESS_KEY as string)
-        console.log(process.env.AWS_REGION as string)
         const params = {
-        Bucket: process.env.AWS_BUCKET_NAME as string,
-        Key: fileName,
-        Body: resizedImageBuffer,
-        ContentType: "image/jpeg", // Change the content type accordingly
+            Bucket: process.env.AWS_BUCKET_NAME as string,
+            Key: fileName,
+            Body: resizedImageBuffer,
+            ContentType: "image/jpeg", // Change the content type accordingly
         };
-    
+        
         const command = new PutObjectCommand(params);
         await s3Client.send(command);
-    
         return fileName;
     }
   
-  export async function POST(request: Request) {
+  export async function POST(request: NextRequest) {
+    const session = await getServerSession(authOptions);
+    if(!session) {
+        return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    }
+    const productImage = request.nextUrl.searchParams.get('productImage');
+    const userImage = request.nextUrl.searchParams.get('userImage');
+    
     try {
         const formData = await request.formData();
         const file = formData.get("file") as Blob | null;
@@ -61,16 +63,26 @@ async function uploadImageToS3(
         const mimeType = file.type;
         const fileExtension = mimeType.split("/")[1];
         const newFileName = `${currentUser.id}.${fileExtension}`
-        console.log(newFileName)
         const buffer = Buffer.from(await file.arrayBuffer());
         const fileName = await uploadImageToS3(
             buffer,
             newFileName
         );
         if(!fileName){
-            return NextResponse.json({ message: "Error uploading image" });
+            return NextResponse.json(null);
         }
-        const url = `https://picturesbaseapp.s3.eu-north-1.amazonaws.com/${fileName}`
+        
+        const url = `https://picturesbaseapp.s3.eu-north-1.amazonaws.com/${fileName}`;
+
+        await prisma.user.update({
+            where: {
+                id: currentUser.id
+            },
+            data: {
+                image: url
+            },
+        });
+
         return NextResponse.json(url);
     } catch (error) {
         console.error("Error uploading image:", error);

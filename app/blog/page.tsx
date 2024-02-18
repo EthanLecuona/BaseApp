@@ -1,9 +1,8 @@
-import BlogCard from "@/components/BlogCard/BlogCard";
-import { CreatePostForm } from "@/components/BlogCard/BlogPostDrawer";
+import BlogCard from "@/app/blog/components/BlogCard";
+import { CreatePostForm } from "@/app/blog/components/BlogPostDrawer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 import {
     Tabs,
     TabsContent,

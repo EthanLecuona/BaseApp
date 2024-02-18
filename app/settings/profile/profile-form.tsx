@@ -117,23 +117,6 @@ export function ProfileForm({ user } : any) {
 
   //Submitting the form.
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    const formFile = new FormData();
-    formFile.append('file', values.image as File);
-    const url = await fetch('http://localhost:3000/api/upload', {
-      method: 'POST',
-      body: formFile
-    })
-    .then((res) => res.json())
-
-    console.log(url)
-    const body = {
-      name: values.name,
-      email: values.email,
-      bio: values.bio,
-      dob: values.dob,
-      image: url
-    };
-
     const handleSuccess = (data: any) => {
       toast({
         title: `Updated Successfully ${data.email}`,
@@ -146,6 +129,25 @@ export function ProfileForm({ user } : any) {
         description: new Date().toISOString()
       });
     }
+    
+    //Image Upload to Amazon S3 Bucket
+    const formFile = new FormData();
+    formFile.append('file', values.image as File);
+    const url = await fetch('http://localhost:3000/api/upload', {
+      method: 'POST',
+      body: formFile
+    })
+    .then((res) => res.json())
+    if(!url){
+      return
+    }
+    const body = {
+      name: values.name,
+      email: values.email,
+      bio: values.bio,
+      dob: values.dob,
+      image: url
+    };
 
     await fetch('/api/users', {
       method: 'PUT',
@@ -190,7 +192,6 @@ export function ProfileForm({ user } : any) {
                   if(e.target.files && e.target.files.length > 0){
                     const file = e.target.files[0];
                     if (file) {
-                      console.log('File set')
                       onChange(file); // Update react-hook-form state
                     }
                   }
