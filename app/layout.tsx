@@ -58,28 +58,29 @@ export default async function RootLayout({
       </html>
     </AuthProvider>  
     )
+  } else {
+    return (
+      <AuthProvider>
+        <html lang="en">
+          <body className={cn(
+            "min-h-screen font-sans antialiased" 
+          )}>
+            <main >
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange>
+                  <NavMenu/>
+                  <div className="pt-[67px]">
+                    {children}  
+                  </div>
+              </ThemeProvider>
+            </main>
+            <Toaster/>
+          </body>
+        </html>
+      </AuthProvider>
+    );
   }
-  return (
-    <AuthProvider>
-      <html lang="en">
-        <body className={cn(
-          "min-h-screen font-sans antialiased" 
-        )}>
-          <main >
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange>
-                <NavMenu/>
-                <div className="pt-[67px]">
-                  {children}  
-                </div>
-            </ThemeProvider>
-          </main>
-          <Toaster/>
-        </body>
-      </html>
-    </AuthProvider>
-  );
 }
