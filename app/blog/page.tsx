@@ -1,9 +1,8 @@
-import BlogCard from "@/components/BlogCard/BlogCard";
-import { CreatePostForm } from "@/components/BlogCard/BlogPostDrawer";
+import BlogCard from "@/app/blog/components/BlogCard";
+import { CreatePostForm } from "@/app/blog/components/BlogPostDrawer";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 import {
     Tabs,
     TabsContent,
@@ -31,6 +30,7 @@ export default async function BlogPage(){
 
     if(allPosts == null || allPosts == undefined || allPosts.length == 0){
         return (
+            
             <Tabs defaultValue="allPosts">
                 <TabsList className="grid w-screen grid-cols-2">
                     <TabsTrigger value="allPosts">All Posts</TabsTrigger>
@@ -39,7 +39,9 @@ export default async function BlogPage(){
                 <div className="w-screen flex justify-center my-2">
                     <CreatePostForm user={currentUser}/>
                 </div>
+            
                 <TabsContent value="allPosts">
+                
                     <div className="w-screen">
                         <h1>There are no posts yet!</h1>
                     </div>

@@ -7,7 +7,13 @@ const nextConfig = {
                 hostname: 'avatars.githubusercontent.com',
                 port: '',
                 pathname: '/u/**',
-            }
+            },
+            {
+                protocol: 'https',
+                hostname: 'picturesbaseapp.s3.eu-north-1.amazonaws.com',
+                port: '',
+                pathname: '/**',
+            },
         ]
     }
 };

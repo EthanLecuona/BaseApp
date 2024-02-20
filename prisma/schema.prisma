@@ -42,16 +42,18 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   bio           String? @db.Text
-  age           Int?
+  dob           DateTime?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   password      String?
+  role          String?
   accounts      Account[]
   following     Follows[] @relation("follower")
   followedBy    Follows[] @relation("following")
   posts         Post[]
   sessions      Session[]
+  cart          Cart?
 }
 
 model Follows {
@@ -73,6 +75,51 @@ model Post {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId]) // Optional: Improve query performance
+}
+
+model Inventory {
+  id          Int      @id @default(autoincrement())
+  productId   String
+  quantity    Int
+  product     Product  @relation(fields: [productId], references: [id])
+
+  @@index([productId])
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  image       String
+  name        String
+  price       Float
+  description String   @db.Text
+  reviews     Review[]
+  inventoryRecords Inventory[]
+  cartItems CartItem[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  text      String   @db.Text
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int      @default(1)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cart      Cart     @relation(fields: [cartId], references: [id])
+}
+
+model Cart {
+  id          String   @id @default(cuid())
+  userId      String
+  items       CartItem[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId])
 }
 
 model VerificationToken {

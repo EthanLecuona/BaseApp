@@ -6,12 +6,9 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-export function SignInButton() {
+export function SignInButton({ user }: any) {
     const { data: session, status } = useSession();
-
-    // if(status === 'loading'){
-    //     return <>Loading...</>;
-    // }
+    
     if(status === 'authenticated'){
         return (
             <Link href={`/dashboard`}>
@@ -29,6 +26,7 @@ export function SignInButton() {
             
         );
     }
+
     if(status === 'unauthenticated'){
         return <Button onClick={() => signIn()}>Sign In</Button>
     }

@@ -1,15 +1,11 @@
 //Always fetches the latest data 
 //export const dynamic = 'force-dynamic';
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import BlogCard from "@/components/BlogCard/BlogCard";
-import DeleteBlogPostButton from "@/components/BlogCard/BlogDeletePostButton";
-import { EditPostForm } from "@/components/BlogCard/BlogPostDrawer";
-import { Button } from "@/components/ui/button";
-import { prisma } from "@/lib/prisma";
-import { Pen } from "lucide-react";
+import { authOptions } from "@/lib/authOptions";
+import BlogCard from "@/app/blog/components/BlogCard";
+import DeleteBlogPostButton from "@/app/blog/components/BlogDeletePostButton";
+import { EditPostForm } from "@/app/blog/components/BlogPostDrawer";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 //Updates cache very n seconds
 //export const revalidate = 420;
@@ -61,7 +57,6 @@ export default async function BlogPostPage({params}: Props) {
 
     const isAuthor = author.id === currentUser.id 
 
-    console.log(post)
     return (
         <div className="grid-rows-2">
             {isAuthor ? 

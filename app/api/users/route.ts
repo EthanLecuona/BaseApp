@@ -1,10 +1,15 @@
-import { prisma } from '@/lib/prisma';
+import prisma from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from 'next-auth';
 import { hashSync } from 'bcrypt-ts'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export async function GET(request: NextRequest){
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const targetUserId = request.nextUrl.searchParams.get('targetUserId');
     const targetUserEmail = request.nextUrl.searchParams.get('targetUserEmail');
     try {
@@ -36,24 +41,31 @@ export async function GET(request: NextRequest){
     
 }
 
-
 export async function PUT(request: Request) {
     const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     const currentUserEmail = session?.user?.email!;
     const data = await request.json();
-    data.age = Number(data.age);
+    if(data.email != currentUserEmail) {
+        return new Response(JSON.stringify({ error: "Naughty, Naughty!" }), { status: 500 });
+    }
 
     const user = await prisma.user.update({
         where: {
             email: currentUserEmail,
         },
-        //should do some validation to check if the data fits the structure in the database.
         data,
     });
     return NextResponse.json(user);
 }
 
 export async function POST(request: Request) {
+    // const session = await getServerSession(authOptions);
+    // if(!session) {
+    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product to your cart" }), { status: 401 }); 
+    // }
     try {
         const data = await request.json();
         const checkUser = await prisma.user.findUnique({
@@ -74,7 +86,7 @@ export async function POST(request: Request) {
             data: {
                 name: data.name,
                 bio: data.bio,
-                age: data.age,
+                dob: data.dob,
                 email: data.email,
                 password: hashPass
             }

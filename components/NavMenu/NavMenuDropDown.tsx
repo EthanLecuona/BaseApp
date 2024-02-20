@@ -48,10 +48,17 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
    
 export function NavMenuDropDown() {
   const { data: session} = useSession();
   const [open, setOpen ] = useState(false);
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/sign-in')
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -61,23 +68,25 @@ export function NavMenuDropDown() {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <Link href={'/settings/profile'}>
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Billing</span>
             <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <Link href={'/settings/display'}>
-              <span>Settings</span>
-            </Link>
-              <DropdownMenuShortcut className="float-right">⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <Link href={'/settings/display'}>
+            <DropdownMenuItem>
+              <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+                <DropdownMenuShortcut className="float-right">⌘S</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>
             <Keyboard className="mr-2 h-4 w-4" />
             <span>Keyboard shortcuts</span>
@@ -150,7 +159,7 @@ export function NavMenuDropDown() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => signOut()}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={() => handleSignOut()}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

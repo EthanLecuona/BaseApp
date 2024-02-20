@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { SignInButton } from '@/components/NavMenu/NavMenuSignInButton';
-import AuthCheck from '@/components/AuthCheck';
+import AuthCheck from '@/app/(auth)/components/AuthCheck';
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -116,6 +116,14 @@ export default function NavMenu() {
                         <Link href="/users" legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Users
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                    <Separator orientation="vertical" className='h-10 bg-slate-300'/>
+                    <NavigationMenuItem>
+                        <Link href="/products" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                Products
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuItem>
