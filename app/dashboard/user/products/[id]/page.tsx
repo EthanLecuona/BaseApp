@@ -28,19 +28,19 @@ export default async function ProductDetail({
     headers: {
       "content-type": "application/json"
     },
-    cache: "force-cache"
+    cache: "no-cache"
   })
   .then((res) => res.json());
+  console.log(product)
   
   const products = await fetch('http://localhost:3000/api/product', {
     method: "GET",
     headers: {
       "content-type": "application/json"
     },
-    cache: "force-cache"
+    cache: "no-cache"
   })
   .then((res) => res.json());
-  
   if (!product) {
     notFound();
   }

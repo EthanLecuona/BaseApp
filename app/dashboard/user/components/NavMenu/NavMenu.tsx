@@ -41,7 +41,7 @@ export default function NavMenu() {
                 <div className='flex space-x-2'>
                     <Separator orientation="vertical" className='h-10 bg-slate-300'/>
                     <NavigationMenuItem>
-                        <Link href="/dashboard/blog" legacyBehavior passHref>
+                        <Link href="/dashboard/user/blog" legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Blog
                             </NavigationMenuLink>
@@ -49,7 +49,7 @@ export default function NavMenu() {
                     </NavigationMenuItem>
                     <Separator orientation="vertical" className='h-10 bg-slate-300'/>
                     <NavigationMenuItem>
-                        <Link href="/dashboard/users" legacyBehavior passHref>
+                        <Link href="/dashboard/user/users" legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Users
                             </NavigationMenuLink>
@@ -57,7 +57,7 @@ export default function NavMenu() {
                     </NavigationMenuItem>
                     <Separator orientation="vertical" className='h-10 bg-slate-300'/>
                     <NavigationMenuItem>
-                        <Link href="/dashboard/products" legacyBehavior passHref>
+                        <Link href="/dashboard/user/products" legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                                 Products
                             </NavigationMenuLink>

@@ -12,7 +12,7 @@ import { Product } from "@/lib/types";
 
 const ProductCard = ({id, name, image, price, description}: Product) => (
   <div className="my-2 flex flex-gird ">
-    <Link href={`products/${id}`}>
+    <Link href={`/dashboard/user/products/${id}`}>
       <Card className="w-[250px] m-4">
         <CardHeader>
           <Image 

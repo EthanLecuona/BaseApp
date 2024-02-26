@@ -10,6 +10,7 @@ import { BellIcon } from "lucide-react";
 import { useState } from "react";
 import { CommandDemo } from "./Command";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ThemeToggle";
 
 export default function Header() {
   const [notifications, setNotifications] = useState<any>([
@@ -27,7 +28,8 @@ export default function Header() {
 
   return (
     <div className="w-10/12 h-[80px] fixed grid grid-cols-2 gap-4 p-4 border-b">
-        <CommandDemo />
+        {/* <CommandDemo /> */}
+        <ModeToggle/>
         <div className="flex items-center justify-end">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>

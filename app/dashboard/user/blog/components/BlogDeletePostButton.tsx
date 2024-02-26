@@ -7,14 +7,14 @@ import { Trash2 } from "lucide-react";
 export default async function DeleteBlogPostButton({postId}: any) {
     const router = useRouter();
     const handleDelete = async () => {
-        const handleSuccess = () => {
-            toast({
-                title: 'Successfully deleted post',
-                content: new Date().toISOString()
-            })
-            router.push('/blog')
-            router.refresh()
-        }
+      const handleSuccess = () => {
+        toast({
+            title: 'Successfully deleted post',
+            content: new Date().toISOString()
+        })
+        router.push('/blog')
+        router.refresh()
+      }
         const handleError = () => {
             toast({
                 title: 'Failed to delete post',

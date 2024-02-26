@@ -25,7 +25,7 @@ export function CommandDemo() {
 
   return (
     <Command className="rounded-lg border" >
-      <CommandInput onValueChange={() => setOpen(true)} className="border-none" placeholder="Type a command or search..." />
+      <CommandInput onClick={() => setOpen(true)} className="border-none" placeholder="Type a command or search..." />
       {open && <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Suggestions">

@@ -1,17 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
     const data = await request.json();
-    const productId = data.productId;
-    const quantity = data.quantity;
-
+    if(!data) {
+        return new Response(JSON.stringify({ error: "An error occurred while adding the product to the inventory" }), { status: 500 }); 
+    }
     try{
         const record = await prisma.inventory.create({
             data: {
-                productId: productId,
-                quantity: quantity,
+                quantity: Number(data.quantity),
+                product: {
+                    create: {
+                        name: data.name,
+                        description: data.description,
+                        price: Number(data.price),
+                        image: data.image
+                    }
+                }
             },
             include: {
                 product: true
@@ -20,29 +28,84 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(record);
     }
     catch(error) {
-        return new Response(JSON.stringify({ error: "An error occurred while adding the product" }), { status: 500 }); 
+        return new Response(JSON.stringify({ error: "!!An error occurred while adding the product to the inventory" }), { status: 500 }); 
     }
 }
 
 export async function GET(request: NextRequest) {
-    const inventoryId = request.nextUrl.searchParams.get('inventoryId');
     try{
-        if(inventoryId) {
-            const inventoryItem = await prisma.inventory.findUnique({
-                where: {
-                    id: inventoryId
-                },
-                include: {
-                    product: true
+        const inventory = await prisma.inventory.findMany({
+            orderBy: {
+                id: 'asc'
+            },
+            include: {
+                product: {
+                    include: {
+                        reviews: true
+                    }
                 }
-            });
-            return NextResponse.json(inventoryItem);
-        } else {
-            const inventory = await prisma.inventory.findMany();
-            return NextResponse.json(inventory);
-        }
+            }
+        });
+        return NextResponse.json(inventory);
     }
     catch(error) {
         return new Response(JSON.stringify({ error: "An error occurred while adding the product" }), { status: 500 }); 
+    }
+}
+
+
+export async function PUT(request: NextRequest) {
+    const data = await request.json();
+    if(!data) {
+        return new Response(JSON.stringify({ error: "An error occurred while adding the product to the inventory" }), { status: 500 }); 
+    }
+    try{
+        const record = await prisma.inventory.update({
+            where: {
+                id: data.id
+            },
+            data: {
+                quantity: Number(data.quantity),
+                product: {
+                    update: {
+                        name: data.name,
+                        description: data.description,
+                        price: Number(data.price),
+                        image: data.image
+                    }
+                }
+            },
+            include: {
+                product: true
+            }
+        })
+        return NextResponse.json(record);
+    }
+    catch(error) {
+        return new Response(JSON.stringify({ error: "!!An error occurred while adding the product to the inventory" }), { status: 500 }); 
+    }
+}
+
+export async function DELETE(request: NextRequest) {
+    const data = await request.json();
+    if(!data) {
+        return new Response(JSON.stringify({ error: "An error occurred while adding the product to the inventory" }), { status: 500 }); 
+    }
+    
+    try{
+        const idsToDelete = data.map((item: any) => item.id);
+        const nameToDelete = data.map((item: any) => item.product.name);
+        const records = await prisma.inventory.deleteMany({
+            where: {
+                id: {
+                    in: idsToDelete
+                }
+            },
+        })
+
+        return NextResponse.json(nameToDelete);
+    }
+    catch(error) {
+        return new Response(JSON.stringify({ error: "!!An error occurred while adding the product to the inventory" }), { status: 500 }); 
     }
 }

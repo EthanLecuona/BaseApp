@@ -26,7 +26,7 @@ export default async function AdminLayout({
 }>) {
   const session = await getServerSession(authOptions)
   // const router = useRouter()
-  if(!session) {
+  if(!session || session.user.role !== 'admin') {
     redirect('/sign-in')
   }
     
