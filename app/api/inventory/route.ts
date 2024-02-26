@@ -95,14 +95,13 @@ export async function DELETE(request: NextRequest) {
     try{
         const idsToDelete = data.map((item: any) => item.id);
         const nameToDelete = data.map((item: any) => item.product.name);
-        const records = await prisma.inventory.deleteMany({
+        await prisma.inventory.deleteMany({
             where: {
                 id: {
                     in: idsToDelete
                 }
             },
         })
-
         return NextResponse.json(nameToDelete);
     }
     catch(error) {
