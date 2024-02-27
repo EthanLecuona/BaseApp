@@ -89,6 +89,7 @@ async function uploadImageToS3(
             return NextResponse.json(url);
         }
         if(productImage == 'true') {
+            console.log("Product Image Hit")
             const productName = formData.get("name") as string | null;
             newFileName = `${productName}.${fileExtension}`
             const buffer = Buffer.from(await file.arrayBuffer());

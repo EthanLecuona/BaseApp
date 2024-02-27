@@ -11,8 +11,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import ReviewProvider from "@/lib/store/ReviewProvider";
 
-export const dynamic = "force-dynamic";
-
 export default async function ProductDetail({
   params: { id },
 }: {

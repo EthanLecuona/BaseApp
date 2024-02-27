@@ -37,7 +37,7 @@ export default async function page () {
             It's a love letter, a shared dream between me and a very special girl. We've decided to embark on this coding journey together, making this project the bedrock of all our future creations. 
             Think of it as our digital diary, where each line of code is a memory, every function a shared experience, and all the bugs... well, let's just say they're our little adventures.`}
           </p>
-            <footer className="text-sm">Ethan Lecuona | Maseeha Mohamed Ibrahim</footer>
+            <footer className="text-sm">Ethan | Maseeha</footer>
           </blockquote>
         </div>
       </div>

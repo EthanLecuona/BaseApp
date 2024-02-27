@@ -4,7 +4,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
-export default async function DeleteBlogPostButton({postId}: any) {
+export default function DeleteBlogPostButton({postId}: any) {
     const router = useRouter();
     const handleDelete = async () => {
       const handleSuccess = () => {

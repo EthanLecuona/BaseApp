@@ -1,5 +1,4 @@
 //Always fetches the latest data 
-//export const dynamic = 'force-dynamic';
 
 import { authOptions } from "@/lib/authOptions";
 import BlogCard from "../components/BlogCard";
@@ -37,7 +36,6 @@ interface Props {
 //         slug: post.slug,
 //     }));
 // }
-
 export default async function BlogPostPage({params}: Props) {
     const session = await getServerSession(authOptions);
     if(!session) {
