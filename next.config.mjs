@@ -1,6 +1,16 @@
+const prod = process.env.NODE_ENV === 'production'
+const withPWA = (await import('next-pwa')).default({
+    dest: 'public',
+    disable: prod ? false: true
+  });
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: true,
+    swcMinify: true,
     images: {
+        unoptimized: true,
         remotePatterns: [
             {
                 protocol: 'https',
@@ -17,5 +27,7 @@ const nextConfig = {
         ]
     }
 };
+// export default nextConfig;
 
-export default nextConfig;
+export default withPWA(nextConfig)
+

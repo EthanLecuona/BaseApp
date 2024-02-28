@@ -3,29 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
 
-export const dynamic = 'force-dynamic'
-export async function POST(request: NextRequest) {
-    // const session = await getServerSession(authOptions);
-    // if(!session) {
-    //     return new Response(JSON.stringify({ error: "You must be logged in to add a product" }), { status: 401 });
-    // }
-
-    try{
-        const data = await request.json();
-        const record = await prisma.product.create({
-            data: {
-                image: data.image,
-                name: data.name,
-                price: data.price,
-                description: data.description,
-            },
-        })
-        return NextResponse.json(record);
-    }
-    catch(error) {
-        return new Response(JSON.stringify({ error: "An error occurred while adding the product" }), { status: 500 }); 
-    }
-}
 
 export async function GET(request: NextRequest) {
     const id = request.nextUrl.searchParams.get('id');

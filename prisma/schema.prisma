@@ -54,6 +54,7 @@ model User {
   posts         Post[]
   sessions      Session[]
   cart          Cart?
+  orders        Order[]
 }
 
 model Follows {
@@ -77,6 +78,33 @@ model Post {
   @@index([userId]) // Optional: Improve query performance
 }
 
+model OrderStatus {
+  id          Int     @id @default(autoincrement())
+  description String  // 'pending', 'completed', 'shipped', 'cancelled'
+
+  orders      Order[]
+
+  @@unique([description])
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  userId          String       
+  productId       String       
+  quantity        Int          
+  price           Float        
+  dateOfOrder     DateTime     @default(now())
+  statusId        Int          
+
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product         Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  status          OrderStatus  @relation(fields: [statusId], references: [id])
+
+  @@index([userId])
+  @@index([productId])
+  @@index([statusId])
+}
+
 model Inventory {
   id          Int      @id @default(autoincrement())
   productId   String
@@ -87,14 +115,15 @@ model Inventory {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  image       String
-  name        String
-  price       Float
-  description String   @db.Text
-  reviews     Review[]
-  inventoryRecords Inventory[]
-  cartItems CartItem[]
+  id                    String   @id @default(cuid())
+  image                 String
+  name                  String
+  price                 Float
+  description           String   @db.Text
+  reviews               Review[]
+  inventoryRecords      Inventory[]
+  cartItems             CartItem[]
+  orders                Order[]
 }
 
 model Review {

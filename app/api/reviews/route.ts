@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
     const productId = data.productId;
     const text = data.text;
     const rating = data.rating;
-    console.log(data)
     try {
         await prisma.review.create({
             data: {

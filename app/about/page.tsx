@@ -8,10 +8,11 @@ export const metadata: Metadata = {
 
 export default async function About() {
     return (
-      <main>
-        <h1>About</h1>
-        <p>We are a social media company!</p>
-      </main>
+        <div className='mt-[67px]'>
+          <h1>About</h1>
+          <p>We are a social media company!</p>
+        </div>
+
     );
 }
   
