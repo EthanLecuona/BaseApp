@@ -26,6 +26,7 @@ const nextConfig = {
         cfg.plugins.push(new webpack.IgnorePlugin({
           resourceRegExp: regex,
         }))
+        return cfg;
     }
 };
 export default nextConfig;
