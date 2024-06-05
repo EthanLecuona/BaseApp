@@ -91,7 +91,6 @@ export default async function RootLayout({
                     {children}
                 </ThemeProvider>
               </main>
-              <Toaster/>
             </body>
         </AuthProvider>  
         {/* <script async type="module" src="/app.js"></script> */}
